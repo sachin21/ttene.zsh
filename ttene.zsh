@@ -9,21 +9,21 @@ autoload -Uz add-zsh-hook
 # Tell me your voices folder
 export TTENE_DIR=$(cd $(dirname $0); pwd)
 
-# sigh with execute status
-#add-zsh-hook precmd exec-status-ttene
+# Sigh with execute status
+add-zsh-hook precmd exec-status-ttene
 
-#exec-status-ttene() {
-#    if [ $? -eq 0 ]; then
-#        ( { mplayer "voices/はーーー.mp3" } &; ) >/dev/null 2>&1
-#    fi
-#}
+exec-status-ttene() {
+  if [ $? -ne 0 ]; then
+    ( { mplayer "voices/はーーー.mp3" } &; ) >/dev/null 2>&1
+  fi
+}
 
 # ttene with new line
 accept-line-ttene() {
-    zle accept-line
-    local voices=(`ls -1 ${TTENE_DIR}/voices|grep -E 'てねっ[0-9]+'|xargs`)
-    local choice=$[${RANDOM}%${#voices[@]}+1]
-    ( { mplayer "${TTENE_DIR}/voices/${voices[$choice]}" } &; ) >/dev/null 2>&1
+  zle accept-line
+  local voices=(`ls -1 ${TTENE_DIR}/voices|grep -E 'てねっ[0-9]+'|xargs`)
+  local choice=$[${RANDOM}%${#voices[@]}+1]
+  ( { mplayer "${TTENE_DIR}/voices/${voices[$choice]}" } &; ) >/dev/null 2>&1
 }
 
 zle -N accept-line-ttene
